@@ -1,10 +1,8 @@
-import { ethers } from 'hardhat';
-import { Contract as OldContract, ContractFactory, Overrides as OldOverrides } from '@ethersproject/contracts';
-import { Signer } from '@ethersproject/abstract-signer';
+import { ethers } from "hardhat";
+import { Contract as OldContract, ContractFactory, Overrides as OldOverrides } from "@ethersproject/contracts";
+import { Signer } from "@ethersproject/abstract-signer";
 
-import {
-  ICPRToken__factory,
-} from 'typechain';
+import { ICPRToken__factory } from "typechain";
 
 // Replace the type of the last param of a function
 type LastIndex<T extends readonly any[]> = ((...t: T) => void) extends (x: any, ...r: infer R) => void
@@ -28,12 +26,12 @@ export type Overrides = OldOverrides & { from?: Signer };
 export type ContractName = { __contractName__: string };
 export type Contract = OldContract & ContractName;
 
-const deployOrAttach = <F extends ContractFactory>(contractName: string, passedSigner?: Signer) => {
-  type ParamsTypes = ReplaceLast<F['deploy'], Overrides>;
+const deployOrAttach = <F extends ContractFactory>(contractName: string) => {
+  type ParamsTypes = ReplaceLast<F["deploy"], Overrides>;
 
   return {
-    deploy: async (...args: Parameters<ParamsTypes>): Promise<AsyncReturnType<F['deploy']> & ContractName> => {
-      let defaultSigner = passedSigner ? passedSigner : (await ethers.getSigners())[0];
+    deploy: async (...args: Parameters<ParamsTypes>): Promise<AsyncReturnType<F["deploy"]> & ContractName> => {
+      let defaultSigner = (await ethers.getSigners())[0];
 
       const deployParamLength = (await ethers.getContractFactory(contractName)).deploy.length;
 
@@ -47,30 +45,30 @@ const deployOrAttach = <F extends ContractFactory>(contractName: string, passedS
         );
         delete overrides.from;
 
-        const contract = (await contractFactory.deploy(...args, overrides)) as AsyncReturnType<F['deploy']> &
+        const contract = (await contractFactory.deploy(...args, overrides)) as AsyncReturnType<F["deploy"]> &
           ContractName;
         contract.__contractName__ = contractName;
         return contract;
       }
       const contract = (await (
         await ethers.getContractFactory(contractName, defaultSigner)
-      ).deploy(...args)) as AsyncReturnType<F['deploy']> & ContractName;
+      ).deploy(...args)) as AsyncReturnType<F["deploy"]> & ContractName;
       contract.__contractName__ = contractName;
       return contract;
     },
-    attach: attachOnly<F>(contractName, passedSigner).attach
+    attach: attachOnly<F>(contractName).attach
   };
 };
 
-const attachOnly = <F extends ContractFactory>(contractName: string, passedSigner?: Signer) => {
+const attachOnly = <F extends ContractFactory>(contractName: string) => {
   return {
-    attach: async (address: string, signer?: Signer): Promise<AsyncReturnType<F['deploy']> & ContractName> => {
-      let defaultSigner = passedSigner ? passedSigner : (await ethers.getSigners())[0];
+    attach: async (address: string, signer?: Signer): Promise<AsyncReturnType<F["deploy"]> & ContractName> => {
+      let defaultSigner = (await ethers.getSigners())[0];
       const contract = (await ethers.getContractAt(
         contractName,
         address,
         signer ? signer : defaultSigner
-      )) as AsyncReturnType<F['deploy']> & ContractName;
+      )) as AsyncReturnType<F["deploy"]> & ContractName;
       contract.__contractName__ = contractName;
       return contract;
     }
@@ -81,7 +79,7 @@ const getContracts = (signer?: Signer) => {
   return {
     connect: (signer: Signer) => getContracts(signer),
 
-    ICPRToken: deployOrAttach<ICPRToken__factory>('ICPRToken', signer)
+    ICPRToken: deployOrAttach<ICPRToken__factory>("ICPRToken")
   };
 };
 
