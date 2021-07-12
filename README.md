@@ -3,11 +3,9 @@
 [![Test](https://github.com/icpReboot/contracts/actions/workflows/workflow.yml/badge.svg)](https://github.com/icpReboot/contracts/actions/workflows/workflow.yml)
 [![License](https://img.shields.io/github/license/icpReboot/contracts?style=flat-square)](https://github.com/icpReboot/contracts/blob/master/LICENSE)
 
-<div align="center">
-  <img alt="ICP Reboot" style="width: 20%" src="./images/logo.png" />
-  <br/>
-  <br/>
-</div>
+<p align="center">
+    <img alt="ICP Reboot" width="320" src="./images/logo.png" />
+</p>
 
 ICPR will be first represented as a standard and audited ERC20 token, with EIP2612 permit (EIP712 signed approvals) functionality to ease the integration of the token with the rest of the protocol and the ecosystem.
 
