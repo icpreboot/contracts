@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { ContractFactory } from "@ethersproject/contracts";
 import { Signer } from "@ethersproject/abstract-signer";
 
-import { ICPRToken__factory } from "typechain";
+import { ICPRToken__factory } from "../typechain";
 
 type AsyncReturnType<T extends (...args: any) => any> = T extends (...args: any) => Promise<infer U>
   ? U

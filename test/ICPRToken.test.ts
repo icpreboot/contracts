@@ -6,8 +6,8 @@ import { TypedDataUtils, signTypedMessage } from "eth-sig-util";
 import { fromRpcSig } from "ethereumjs-util";
 import Wallet from "ethereumjs-wallet";
 
-import Contracts from "test/Contracts";
-import { ICPRToken } from "typechain";
+import Contracts from "./Contracts";
+import { ICPRToken } from "../typechain";
 
 const {
   constants: { AddressZero, MaxUint256 }
